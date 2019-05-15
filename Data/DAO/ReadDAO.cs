@@ -19,5 +19,10 @@ namespace JscanMonitoringCore.Data.DAO
                 transaction.Commit();
             }
         }
+
+        public Read Get(int id)
+        {
+            return new Read();
+        }
     }
 }

@@ -8,16 +8,26 @@ namespace JscanMonitoringCore.ClassBody
     /// </summary>
     public class BaseBody
     {
-        public static bool IsOnline;
-        public static bool IsValid;
+        public bool IsOnline;
+        public bool IsValid;
 
         /// <summary>
         /// Método Responsável por ler o status code da API, e validar se a API está ou não online.
         /// </summary>
-        public static void ValidateStatusCode(HttpStatusCode code)
+        public void ValidateStatusCode(HttpStatusCode code)
         {
             Console.WriteLine("validando codigo de resposta...");
             IsOnline = code == HttpStatusCode.OK;
+        }
+
+        /// <summary>
+        /// Método Responsável por ler o corpo da API, e validar se a resposta é o esperado
+        /// </summary>
+        public virtual void ValidateResponseBody(string response)
+        {
+            Console.WriteLine("validando corpo de resposta...");
+
+            IsValid = !(response is null);
         }
     }
 }

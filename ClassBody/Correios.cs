@@ -19,15 +19,14 @@ namespace JscanMonitoringCore.ClassBody
 
         #region .: Methods
         /// <summary>
-        /// Método Responsável por ler o corpo da API, e validar se a resposta é o esperado
+        /// Override no metodo do BaseBody, para validar de uma forma diferente da usual
         /// </summary>
-        public static void ValidateResponseBody(string response)
+        public override void ValidateResponseBody(string response)
         {
             Console.WriteLine("validando corpo de resposta...");
 
             Correios api = JsonConvert.DeserializeObject<Correios>(response);
 
-            //Conversar sobre deixar específico ou genérico
             IsValid = api.Cep == "03901-010" && api.Logradouro == "Avenida dos Nacionalistas";
         }
 

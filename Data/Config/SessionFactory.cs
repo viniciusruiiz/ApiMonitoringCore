@@ -33,8 +33,9 @@ namespace JscanMonitoringCore.Data.Config
                     //"Server=localhost;Database=master;Trusted_Connection=True;"
                     "Server=localhost;Port=3306;Database=bandtec;Uid=root;Pwd=bandtec"
                     )
-                    .ShowSql()
-                    .FormatSql())
+                    //.ShowSql()
+                    //.FormatSql()
+                    )
                 .Mappings(x => x.FluentMappings.AddFromAssemblyOf<ReadMapping>())
                 .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
                 .BuildSessionFactory();

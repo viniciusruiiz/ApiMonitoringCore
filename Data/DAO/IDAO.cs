@@ -6,5 +6,6 @@
     public interface IDAO<T>
     {
         void Insert(T obj);
+        T Get(int id);
     }
 }

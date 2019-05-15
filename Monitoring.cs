@@ -14,22 +14,33 @@ namespace JscanMonitoringCore
 
         static async Task Main()
         {
+            ApiDAO colocarTabela = new ApiDAO();
+
+            var api = colocarTabela.Get(1);
+
+            Console.WriteLine("API BUSCADA: " +api.Name+"\n");
+
+            await MonitoringApi(api.EndPoint , new Correios());
+        }
+
+        static async Task MonitoringApi(string url, BaseBody @base)
+        {
             _newRead = new ReadDAO();
             int minute = 60000;
+            BaseBody api = @base;
+            HttpResponseMessage response;
 
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage response;
-
                     while (true)
                     {
-                        response = await client.GetAsync("https://viacep.com.br/ws/03901010/json/");//Faz a requisição
+                        response = await client.GetAsync(url);//Faz a requisição
 
-                        Correios.ValidateStatusCode(response.StatusCode);//Valida o status code retornado da requisição
+                        api.ValidateStatusCode(response.StatusCode);//Valida o status code retornado da requisição
 
-                        if (Correios.IsOnline)
+                        if (api.IsOnline)
                         {
                             Console.WriteLine("API Online!");
                         }
@@ -38,9 +49,9 @@ namespace JscanMonitoringCore
                             Console.WriteLine("API Offline :(");
                         }
 
-                        Correios.ValidateResponseBody(await response.Content.ReadAsStringAsync());//Valida o corpo da requisição
+                        api.ValidateResponseBody(await response.Content.ReadAsStringAsync());//Valida o corpo da requisição
 
-                        if (Correios.IsValid)
+                        if (api.IsValid)
                         {
                             Console.WriteLine("Resposta da API validada!");
                         }
@@ -52,8 +63,8 @@ namespace JscanMonitoringCore
                         //Instanciando um novo objeto de leitura
                         Read read = new Read
                         {
-                            Active = Correios.IsOnline,
-                            Valid = Correios.IsValid,
+                            Active = api.IsOnline,
+                            Valid = api.IsValid,
                             ReadMoment = DateTime.Now
                         };
 
